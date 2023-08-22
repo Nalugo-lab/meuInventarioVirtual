@@ -1,19 +1,16 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
+from django.db import models
+from django.contrib.auth.models import PermissionsMixin, UserManager
+from django.contrib.auth.base_user import AbstractBaseUser
+
 from django.utils import timezone
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    """
-    An abstract base class implementing a fully featured User model with
-    admin-compliant permissions.
-
-    Username and password are required. Other fields are optional.
-    """
 
     name = models.CharField(("name"), max_length=150, blank=True)
     surname = models.CharField(("surname"), max_length=150, blank=True)
-    email = models.EmailField(("email address"), blank=True)
+    email = models.EmailField(("email address"), unique=True)
     is_staff = models.BooleanField(
         ("staff status"),
         default=False,
@@ -33,12 +30,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     EMAIL_FIELD = "email"
-    REQUIRED_FIELDS = ["email"]
+    USERNAME_FIELD = 'email'
+
+    REQUIRED_FIELDS = [""]
 
     class Meta:
         verbose_name = ("user")
         verbose_name_plural = ("users")
-        abstract = True
 
     def clean(self):
         super().clean()
