@@ -10,22 +10,36 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
+from pathlib import Path
+from .envvars import load_envars
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_331a1rg2bj51(y8u5%36^!!j8d237jbmrzxsc1^*85#fi3-6c'
+# Environment Variables
+
+env_vars = load_envars(BASE_DIR)
+
+db_name = env_vars['db_name']
+db_user = env_vars['db_user']
+db_host = env_vars['db_host']
+db_passwd = env_vars['db_pw']
+SECRET_KEY = env_vars['django_secret_key']
+debug_mode = env_vars['debug_mode']
+email_user = env_vars['email_sistema']
+email_pass = env_vars['email_pw']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = debug_mode
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -75,8 +89,14 @@ WSGI_APPLICATION = 'meuInventarioVirtual.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+
+        'NAME': db_name,
+        'PORT': '',
+
+        'USER': db_user,
+        'PASSWORD': db_passwd,
+        'HOST': db_host,
     }
 }
 
@@ -109,6 +129,8 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
 
@@ -116,8 +138,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'settings/media')
+
+LOGIN_URL='/login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = ''
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = ''
+EMAIL_PORT = 587
+EMAIL_HOST_USER = email_user
+EMAIL_HOST_PASSWORD = email_pass
+X_FRAME_OPTIONS = 'SAMEORIGIN'
