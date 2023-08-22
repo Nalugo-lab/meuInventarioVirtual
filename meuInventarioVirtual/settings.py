@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-from .envvars import load_envars
+from .envvars import load_envvars
 
 from pathlib import Path
 
@@ -25,7 +25,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Environment Variables
 
-env_vars = load_envars(BASE_DIR)
+env_vars = load_envvars(BASE_DIR)
 
 db_name = env_vars['db_name']
 db_user = env_vars['db_user']
@@ -51,6 +51,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #apps
+    'inventory',
+    'subscription',
+    'authentication',
+
 ]
 
 MIDDLEWARE = [
@@ -161,3 +167,5 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = email_user
 EMAIL_HOST_PASSWORD = email_pass
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+AUTH_USER_MODEL = 'authentication.User'
