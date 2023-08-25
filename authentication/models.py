@@ -3,6 +3,7 @@ from django.db import models
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, UserManager
 from django.contrib.auth.base_user import AbstractBaseUser
+from subscription.models import Subscription, Client_subscription
 
 from django.utils import timezone
 
@@ -70,3 +71,4 @@ class Client(models.Model):
     cellphone_number = models.CharField(unique=True, max_length=11)
     datetime_joined = models.DateTimeField(("date joined"), default=timezone.now)
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=("Criador"), on_delete=models.PROTECT)
+    subscription = models.ManyToManyField(Subscription, through=Client_subscription)
