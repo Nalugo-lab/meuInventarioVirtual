@@ -131,6 +131,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-balcao_de_emprego/static/
-balcao_de_emprego/media/

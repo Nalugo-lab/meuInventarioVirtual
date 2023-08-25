@@ -6,11 +6,20 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils import timezone
 
 
+USER_STATUS = (
+    (1, "Account created"),
+    (2, "Active account"),
+    (3, "Active"),
+    (4, "Disabled"),
+)
+
+
 class User(AbstractBaseUser, PermissionsMixin):
 
     name = models.CharField(("name"), max_length=150, blank=True)
     surname = models.CharField(("surname"), max_length=150, blank=True)
     email = models.EmailField(("email address"), unique=True)
+    cellphone_number = models.CharField(unique=True)
     is_staff = models.BooleanField(
         ("staff status"),
         default=False,
@@ -25,13 +34,14 @@ class User(AbstractBaseUser, PermissionsMixin):
             "Unselect this instead of deleting accounts."
         ),
     )
+    email_verified = models.BooleanField(default=False)
+    account_status = models.Choices(USER_STATUS, default=1)
     date_joined = models.DateTimeField(("date joined"), default=timezone.now)
 
     objects = UserManager()
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = 'email'
-
     REQUIRED_FIELDS = [""]
 
     class Meta:
@@ -48,3 +58,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         full_name = "%s %s" % (self.first_name, self.last_name)
         return full_name.strip()
+
+
+class Client(models.Model):
+
+    name = models.CharField(("name"), max_length=150, blank=True)
+    surname = models.CharField(("surname"), max_length=150, blank=True)
+    email = models.EmailField(("email address"), unique=True)
+    cellphone_number = models.CharField(unique=True)
