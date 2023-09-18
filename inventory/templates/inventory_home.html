@@ -20,8 +20,8 @@
         <div class="card"></div>
       </section>
 
-      <section>
-        <table>
+      <section class="history-section">
+        <table class="activity">
           <thead>
             <tr>
               <th>Data</th>
@@ -46,12 +46,22 @@
           </tbody>
         </table>
       </section>
+
     </main>
 
     <footer></footer>
   </body>
 
   <style>
+
+    main{
+        padding: 8px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        background-color: #EDF0F5;
+        height: 100%;
+    }
 
     .navbar{
         display: flex;
@@ -66,7 +76,7 @@
 
     .cards{
         display: flex;
-        gap: 32px;
+        gap: 24px;
     }
 
     .card{
@@ -75,7 +85,7 @@
         border-radius: 8px;
         min-height: 120px;
         width: 100%;
-        max-width: 240px;
+        max-width: 320px;
     }
 
     *{
@@ -84,6 +94,32 @@
         box-sizing: border-box;
     }
 
+    .activity{
+        padding: 8px;
+        background-color: white;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    .activity tr{
+        display: flex;
+    }
+
+    .activity th{
+        width: 100%;
+        text-align: start;
+    }
+
+    .activity td{
+        width: 100%;
+        text-align: start;
+    }
+
+    body{
+        height: 100vh;
+    }
+
   </style>
+
 
 </html>
