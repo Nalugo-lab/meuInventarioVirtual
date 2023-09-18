@@ -7,12 +7,15 @@ class Subscription(models.Model):
     base_price = models.FloatField(max_length=16, verbose_name='Preço base')
     period = models.IntegerField(verbose_name='Período (em meses)')
     description = models.CharField(max_length=512, verbose_name='Descrição')
+    subscription = models.ManyToManyField(Client, through="Client_subscription")
+
 
 class Subscription_historic(models.Model):
     payment_date=models.DateField(verbose_name='Data da transação')
     end_date=models.DateField(verbose_name='Data de expiração')
     client = models.ForeignKey(Client, on_delete=models.PROTECT)
     subscription = models.ForeignKey(Subscription, on_delete=models.PROTECT)
+
 
 class Client_subscription(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
