@@ -7,9 +7,6 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils import timezone
 
 
-
-
-
 class User(AbstractBaseUser, PermissionsMixin):
     USER_STATUS = [
         (1, "Account created"),
@@ -18,6 +15,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         (4, "Disabled")
     ]
 
+    username = models.CharField(unique=True, max_length=64)
     name = models.CharField(("name"), max_length=150, blank=True)
     surname = models.CharField(("surname"), max_length=150, blank=True)
     email = models.EmailField(("email address"), unique=True)
@@ -37,14 +35,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     email_verified = models.BooleanField(default=False)
-    account_status = models.IntegerField(choices=USER_STATUS)
+    account_status = models.IntegerField(choices=USER_STATUS, default=1)
     datetime_joined = models.DateTimeField(("date joined"), default=timezone.now)
 
     objects = UserManager()
 
     EMAIL_FIELD = "email"
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = [""]
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
 
     class Meta:
         verbose_name = ("user")
